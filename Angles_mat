@@ -1,0 +1,45 @@
+clear s % closes port if already open
+s = serialport('COM27',9600); % Check COM#!
+
+n = 'x'
+
+s.writeline(n)
+
+msg_from_pico = s.readline();
+msg_from_pico
+%%
+
+items = split(msg_from_pico, ',')
+data = cell2mat(arrayfun(@str2num,items,'uni',0))
+ccwp = data(2:30,1)
+time = linspace(0,3,29)
+ccwpitchtime = reshape(time,[29,1])
+ccwpitchvel = ccwp./ccwpitchtime
+
+%%
+%figure(1)
+%hold on
+%plot(CCWt,CCWyaw)
+%plot(CWt,CWyaw)
+%plot(CCWtp,CCWpitch)
+%plot(CWtp,CWpitch)
+%title('Position vs Time')
+%legend("CCW Yaw", "CW Yaw")
+%legend("CCW Yaw", "CW Yaw","CCW Pitch", "CW Pitch")
+%hold off
+
+figure(1)
+hold on
+plot(ccwyawtime, ccwyawvel)
+plot(cwyawtime, cwyawvel)
+plot(cwpitchtime, cwpitchvel)
+plot(ccwpitchtime, ccwpitchvel)
+
+title("Angular Velocity vs Time")
+legend("CCW Yaw", "CW Yaw", "CCW Pitch", "CW Pitch")
+hold off
+
+
+
+
+
